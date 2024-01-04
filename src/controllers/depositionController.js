@@ -1,3 +1,4 @@
+import NotFoundError from '../errors/NotFoundError.js';
 import { depositions } from '../models/Depositions.js';
 
 class DepositionsController {
@@ -5,6 +6,29 @@ class DepositionsController {
     try {
       const depositionsList = await depositions.find();
       res.status(200).json(depositionsList);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async saveDeposition(req, res, next) {
+    try {
+      const depositionData = req.body;
+      const newDeposition = await depositions.create(depositionData);
+      res.status(201).json({ message: 'Deposition created successfully', newDeposition });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async deleteDeposition(req, res, next) {
+    try {
+      const depositionId = req.body.id;
+      if (await depositions.findByIdAndDelete(depositionId) !== null) {
+        res.status(200).json({ message: 'Deposition deleted successfully' });
+      } else {
+        next(new NotFoundError('Deposition not found!'));
+      }
     } catch (error) {
       next(error);
     }

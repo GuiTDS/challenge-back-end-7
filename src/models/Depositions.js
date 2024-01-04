@@ -4,7 +4,7 @@ const depositionSchema = new mongoose.Schema({
   id: { type: mongoose.Types.ObjectId },
   name: { type: String },
   deposition: { type: String },
-  photoPath: { type: String },
+  photo: { type: String },
 }, { versionKey: false });
 
 const depositions = mongoose.model('depositions', depositionSchema);
