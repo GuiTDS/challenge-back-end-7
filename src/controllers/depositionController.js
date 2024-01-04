@@ -21,9 +21,25 @@ class DepositionsController {
     }
   }
 
+  static async updateDeposition(req, res, next) {
+    try {
+      const depositionId = req.params.id;
+      const depositionData = req.body;
+
+      if (await depositions.findByIdAndUpdate(depositionId, depositionData) !== null) {
+        const updatedDeposition = await depositions.findById(depositionId);
+        res.status(200).json({ message: 'Deposition updated successfully', updatedDeposition });
+      } else {
+        next(new NotFoundError('Deposition not found!'));
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async deleteDeposition(req, res, next) {
     try {
-      const depositionId = req.body.id;
+      const depositionId = req.params.id;
       if (await depositions.findByIdAndDelete(depositionId) !== null) {
         res.status(200).json({ message: 'Deposition deleted successfully' });
       } else {

@@ -5,6 +5,7 @@ const routes = express.Router();
 
 routes.get('/depoimentos', DepositionsController.getDepositions);
 routes.post('/depoimentos', DepositionsController.saveDeposition);
-routes.delete('/depoimentos', DepositionsController.deleteDeposition);
+routes.put('/depoimentos/:id', DepositionsController.updateDeposition);
+routes.delete('/depoimentos/:id', DepositionsController.deleteDeposition);
 
 export default routes;
