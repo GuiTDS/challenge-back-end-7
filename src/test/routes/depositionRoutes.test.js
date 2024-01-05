@@ -24,6 +24,16 @@ describe('GET em /depoimentos', () => {
   });
 });
 
+describe('GET em /depoimentos-home', () => {
+  it('Deve retornar três depoimentos', async () => {
+    const resposta = await request(app)
+      .get('/depoimentos-home')
+      .expect('content-type', /json/)
+      .expect(200);
+    expect(resposta.body.length).toBe(3);
+  });
+});
+
 let idResposta;
 describe('POST em /depoimentos', () => {
   it('Deve adicionar um novo depoimento', async () => {
@@ -37,6 +47,20 @@ describe('POST em /depoimentos', () => {
       .expect(201);
     // eslint-disable-next-line no-underscore-dangle
     idResposta = resposta.body.newDeposition._id;
+  });
+
+  it('Deve não adicionar ao passar body vazio', async () => {
+    await request(app)
+      .post('/depoimentos')
+      .send({})
+      .expect(400);
+  });
+
+  it('Deve não adicionar ao passar body com informações faltantes', async () => {
+    await request(app)
+      .post('/depoimentos')
+      .send({ name: 'teste' })
+      .expect(400);
   });
 });
 

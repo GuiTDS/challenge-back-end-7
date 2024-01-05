@@ -13,8 +13,8 @@ class DepositionsController {
 
   static async getFirstDepositions(req, res, next) {
     try {
-      const randomDepositions = await depositions.find().limit(3);
-      res.status(200).json(randomDepositions);
+      const firstDepositions = await depositions.find().limit(3);
+      res.status(200).json(firstDepositions);
     } catch (error) {
       next(error);
     }
@@ -50,7 +50,7 @@ class DepositionsController {
     try {
       const depositionId = req.params.id;
       if (await depositions.findByIdAndDelete(depositionId) !== null) {
-        res.status(200).json({ message: 'Deposition deleted successfully'});
+        res.status(200).json({ message: 'Deposition deleted successfully' });
       } else {
         next(new NotFoundError('Deposition not found!'));
       }
