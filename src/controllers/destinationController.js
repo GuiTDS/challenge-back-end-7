@@ -4,8 +4,15 @@ import NotFoundError from '../errors/NotFoundError.js';
 class DestinationController {
   static async getDestination(req, res, next) {
     try {
-      const destinationList = await destination.find();
-      res.status(200).json(destinationList);
+      const search = processSearch(req.query);
+      let destinationList;
+      if (search !== null) {
+        destinationList = await destination.find(search);
+        res.status(200).json(destinationList);
+      } else {
+        destinationList = await destination.find();
+        res.status(200).json(destinationList);
+      }
     } catch (error) {
       next(error);
     }
@@ -49,6 +56,14 @@ class DestinationController {
       next(error);
     }
   }
+}
+
+function processSearch(parameters) {
+  const { name } = parameters;
+  const search = {};
+  if (name) search.name = { $regex: name, $options: 'i' };
+
+  return search;
 }
 
 export default DestinationController;
