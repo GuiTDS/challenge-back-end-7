@@ -1,5 +1,5 @@
 import NotFoundError from '../errors/NotFoundError.js';
-import { depositions } from '../models/Depositions.js';
+import { depositions } from '../models/index.js';
 
 class DepositionsController {
   static async getDepositions(req, res, next) {
