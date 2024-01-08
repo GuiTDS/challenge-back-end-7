@@ -5,14 +5,11 @@ class DestinationController {
   static async getDestination(req, res, next) {
     try {
       const search = processSearch(req.query);
-      let destinationList;
-      if (search !== null) {
-        destinationList = await destination.find(search);
-        res.status(200).json(destinationList);
-      } else {
-        destinationList = await destination.find();
-        res.status(200).json(destinationList);
-      }
+      const destinationList = search !== null
+        ? await destination.find(search)
+        : await destination.find();
+      if (destinationList.length === 0) res.status(200).json({ message: 'Nenhum destino encontrado' });
+      else res.status(200).json(destinationList);
     } catch (error) {
       next(error);
     }
