@@ -39,7 +39,9 @@ describe('POST em /destinos', () => {
       .send({
         name: 'Teste',
         price: 999,
-        photo: 'http://github.com/GuiTDS.png',
+        photo_1: 'http://github.com/GuiTDS.png',
+        photo_2: 'http://github.com/GuiTDS.png',
+        meta: 'Teste de meta',
       })
       .expect(201);
     // eslint-disable-next-line no-underscore-dangle
@@ -57,6 +59,26 @@ describe('POST em /destinos', () => {
     await request(app)
       .post('/destinos')
       .send({ name: 'teste' })
+      .expect(400);
+  });
+
+  it('Deve não adicionar ao passar "meta" com mais de 160 caracteres', async () => {
+    await request(app)
+      .post('/destinos')
+      .send({
+        name: 'teste',
+        price: 999,
+        photo_1: 'www.test.com.br',
+        photo_2: 'www.test.com.br',
+        meta: `aaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaa`,
+      })
       .expect(400);
   });
 });
