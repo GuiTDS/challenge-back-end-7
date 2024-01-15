@@ -15,6 +15,20 @@ class DestinationController {
     }
   }
 
+  static async getDestinationById(req, res, next) {
+    try {
+      const destinationId = req.params.id;
+      const searchedDestination = await destination.findById(destinationId);
+      if (searchedDestination) {
+        res.status(200).json(searchedDestination);
+      } else {
+        next(new NotFoundError('Destino não encontrado'));
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async saveDestination(req, res, next) {
     try {
       const destinationData = req.body;
